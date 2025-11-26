@@ -1,0 +1,74 @@
+{
+  "nav": {
+    "home": "Home",
+    "docs": "Docs",
+    "examples": "Examples",
+    "roadmap": "Roadmap",
+    "github": "GitHub"
+  },
+  "home": {
+    "title": "The events you know. Built for AI-powered applications.",
+    "subtitle": "",
+    "slogan": "",
+    "purpose": "Rohas simplifies building event-driven applications by providing a schema-driven development approach that generates type-safe code and handles the complexity of event orchestration.",
+    "description": "Build scalable event-driven applications with schema-driven development. Support for Python and TypeScript runtimes, multiple event adapters, and powerful code generation.",
+    "getStarted": "Get Started",
+    "documentation": "Documentation",
+    "features": "Powerful Features",
+    "quickStart": "Quick Start",
+    "footer": {
+      "copyright": "© {year} Rohas. MIT License.",
+      "github": "GitHub",
+      "docs": "Documentation"
+    }
+  },
+  "features": {
+    "schemaDriven": {
+      "title": "Schema-Driven Development",
+      "description": "Define your APIs, events, models, and cron jobs using simple schema files. Rohas generates type-safe code automatically."
+    },
+    "multiRuntime": {
+      "title": "Multi-Runtime Support",
+      "description": "Write handlers in Python or TypeScript/Node.js. Choose the language that fits your team."
+    },
+    "adapters": {
+      "title": "Event Adapters",
+      "description": "Connect to NATS, Kafka, RabbitMQ, SQS, or use in-memory adapters for development."
+    },
+    "hotReload": {
+      "title": "Hot Reload",
+      "description": "Development server with automatic reloading. See your changes instantly."
+    },
+    "codegen": {
+      "title": "Code Generation",
+      "description": "Auto-generate type-safe interfaces, handler stubs, and boilerplate code from your schemas."
+    },
+    "telemetry": {
+      "title": "Built-in Telemetry",
+      "description": "Integrated tracing, metrics, and logging. Monitor your workflows with ease."
+    }
+  },
+  "docs": {
+    "title": "Documentation",
+    "description": "Learn how to build event-driven applications with Rohas.",
+    "overview": "Overview",
+    "gettingStarted": "Getting Started",
+    "installation": "Installation",
+    "architecture": "Architecture",
+    "schemas": "Schemas",
+    "handlers": "Handlers",
+    "runtime": "Runtime",
+    "adapters": "Event Adapters",
+    "telemetry": "Telemetry",
+    "cli": "CLI Reference",
+    "configuration": "Configuration",
+    "roadmap": "Roadmap"
+  },
+  "examples": {
+    "title": "Examples",
+    "description": "Explore example projects to learn how to build event-driven applications with Rohas.",
+    "runningExamples": "Running Examples",
+    "readGuide": "For more details, see the"
+  }
+}
+

@@ -1,0 +1,74 @@
+{
+  "nav": {
+    "home": "ホーム",
+    "docs": "ドキュメント",
+    "examples": "例",
+    "roadmap": "ロードマップ",
+    "github": "GitHub"
+  },
+  "home": {
+    "title": "あなたが知っているイベント。AI駆動アプリケーションのために構築。",
+    "subtitle": "",
+    "slogan": "",
+    "purpose": "Rohasは、スキーマ駆動の開発アプローチを提供し、型安全なコードを生成し、イベントオーケストレーションの複雑さを処理することで、イベント駆動アプリケーションの構築を簡素化します。",
+    "description": "スキーマ駆動の開発でスケーラブルなイベント駆動アプリケーションを構築。PythonとTypeScriptランタイム、複数のイベントアダプター、強力なコード生成をサポート。",
+    "getStarted": "始める",
+    "documentation": "ドキュメント",
+    "features": "強力な機能",
+    "quickStart": "クイックスタート",
+    "footer": {
+      "copyright": "© {year} Rohas. MIT License.",
+      "github": "GitHub",
+      "docs": "ドキュメント"
+    }
+  },
+  "features": {
+    "schemaDriven": {
+      "title": "スキーマ駆動開発",
+      "description": "シンプルなスキーマファイルを使用して、API、イベント、モデル、cronジョブを定義します。Rohasは型安全なコードを自動生成します。"
+    },
+    "multiRuntime": {
+      "title": "マルチランタイムサポート",
+      "description": "PythonまたはTypeScript/Node.jsでハンドラーを記述します。チームに適した言語を選択してください。"
+    },
+    "adapters": {
+      "title": "イベントアダプター",
+      "description": "NATS、Kafka、RabbitMQ、SQSに接続するか、開発用のインメモリアダプターを使用します。"
+    },
+    "hotReload": {
+      "title": "ホットリロード",
+      "description": "自動リロード機能を備えた開発サーバー。変更を即座に確認できます。"
+    },
+    "codegen": {
+      "title": "コード生成",
+      "description": "スキーマから型安全なインターフェース、ハンドラースタブ、ボイラープレートコードを自動生成します。"
+    },
+    "telemetry": {
+      "title": "組み込みテレメトリ",
+      "description": "統合されたトレーシング、メトリクス、ロギング。ワークフローを簡単に監視できます。"
+    }
+  },
+  "docs": {
+    "title": "ドキュメント",
+    "description": "Rohasでイベント駆動アプリケーションを構築する方法を学びます。",
+    "overview": "概要",
+    "gettingStarted": "はじめに",
+    "installation": "インストール",
+    "architecture": "アーキテクチャ",
+    "schemas": "スキーマ",
+    "handlers": "ハンドラー",
+    "runtime": "ランタイム",
+    "adapters": "イベントアダプター",
+    "telemetry": "テレメトリ",
+    "cli": "CLIリファレンス",
+    "configuration": "設定",
+    "roadmap": "ロードマップ"
+  },
+  "examples": {
+    "title": "例",
+    "description": "Rohasでイベント駆動アプリケーションを構築する方法を学ぶためのサンプルプロジェクトを探索します。",
+    "runningExamples": "例の実行",
+    "readGuide": "詳細については、以下を参照してください"
+  }
+}
+

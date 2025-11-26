@@ -1,0 +1,70 @@
+{
+  "nav": {
+    "home": "ទំព័រដើម",
+    "docs": "ឯកសារ",
+    "examples": "ឧទាហរណ៍",
+    "roadmap": "ផែនការ",
+    "github": "GitHub"
+  },
+  "home": {
+    "title": "ព្រឹត្តិការណ៍ដែលអ្នកស្គាល់។ បានបង្កើតសម្រាប់កម្មវិធីដែលដំណើរការដោយ AI។",
+    "subtitle": "",
+    "slogan": "",
+    "description": "បង្កើតកម្មវិធី event-driven ដែលមានសមត្ថភាពពង្រីកបានជាមួយនឹងការអភិវឌ្ឍន៍ schema-driven។ គាំទ្រ Python និង TypeScript runtimes, event adapters ច្រើន, និងការបង្កើតកូដដ៏មានឥទ្ធិពល។",
+    "getStarted": "ចាប់ផ្តើម",
+    "documentation": "ឯកសារ",
+    "features": "លក្ខណៈពិសេសដ៏មានឥទ្ធិពល",
+    "quickStart": "ចាប់ផ្តើមយ៉ាងឆាប់",
+    "footer": {
+      "copyright": "© {year} Rohas. MIT License.",
+      "github": "GitHub",
+      "docs": "ឯកសារ"
+    }
+  },
+  "features": {
+    "schemaDriven": {
+      "title": "ការអភិវឌ្ឍន៍ Schema-Driven",
+      "description": "កំណត់ APIs, events, models, និង cron jobs របស់អ្នកដោយប្រើឯកសារ schema សាមញ្ញ។ Rohas បង្កើតកូដ type-safe ដោយស្វ័យប្រវត្តិ។"
+    },
+    "multiRuntime": {
+      "title": "ការគាំទ្រ Multi-Runtime",
+      "description": "សរសេរ handlers ជាភាសា Python ឬ TypeScript/Node.js។ ជ្រើសរើសភាសាដែលសមនឹងក្រុមរបស់អ្នក។"
+    },
+    "adapters": {
+      "title": "Event Adapters",
+      "description": "ភ្ជាប់ទៅ NATS, Kafka, RabbitMQ, SQS, ឬប្រើ in-memory adapters សម្រាប់ការអភិវឌ្ឍន៍។"
+    },
+    "hotReload": {
+      "title": "Hot Reload",
+      "description": "Development server ជាមួយនឹងការផ្ទុកឡើងវិញដោយស្វ័យប្រវត្តិ។ មើលការផ្លាស់ប្តូររបស់អ្នកភ្លាមៗ។"
+    },
+    "codegen": {
+      "title": "ការបង្កើតកូដ",
+      "description": "បង្កើត interfaces type-safe, handler stubs, និងកូដ boilerplate ដោយស្វ័យប្រវត្តិពី schemas របស់អ្នក។"
+    },
+    "telemetry": {
+      "title": "Telemetry ដែលបានបង្កើតជាមួយ",
+      "description": "Tracing, metrics, និង logging ដែលបានបញ្ចូល។ តាមដាន workflows របស់អ្នកដោយងាយស្រួល។"
+    }
+  },
+  "docs": {
+    "title": "ឯកសារ",
+    "description": "រៀនពីរបៀបបង្កើតកម្មវិធី event-driven ជាមួយ Rohas។",
+    "overview": "ទិដ្ឋភាពទូទៅ",
+    "gettingStarted": "ចាប់ផ្តើម",
+    "installation": "ការដំឡើង",
+    "schemas": "Schemas",
+    "handlers": "Handlers",
+    "adapters": "Event Adapters",
+    "cli": "CLI Reference",
+    "configuration": "ការកំណត់",
+    "roadmap": "ផែនការ"
+  },
+  "examples": {
+    "title": "ឧទាហរណ៍",
+    "description": "ស្វែងរកគម្រោងឧទាហរណ៍ដើម្បីរៀនពីរបៀបបង្កើតកម្មវិធី event-driven ជាមួយ Rohas។",
+    "runningExamples": "ការដំណើរការឧទាហរណ៍",
+    "readGuide": "សម្រាប់ព័ត៌មានលម្អិតបន្ថែម, សូមមើល"
+  }
+}
+
