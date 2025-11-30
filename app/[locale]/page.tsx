@@ -1347,11 +1347,17 @@ export default async function Home({
                 {
                   step: "2",
                   title: "Initialize a Project",
-                  code: "rohas init my-app --lang typescript",
+                  code: "rohas init my-app --lang python",
                   color: "purple",
                 },
                 {
                   step: "3",
+                  title: "Generate Code",
+                  code: "cd my-app && rohas codegen",
+                  color: "green",
+                },
+                {
+                  step: "4",
                   title: "Start Development",
                   code: "rohas dev --workbench",
                   color: "pink",

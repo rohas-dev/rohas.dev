@@ -35,14 +35,16 @@ rohas --version
 Initialize a new Rohas project:
 
 ```bash
+rohas init my-app --lang python
+```
+
+Or for TypeScript (experimental):
+
+```bash
 rohas init my-app --lang typescript
 ```
 
-Or for Python:
-
-```bash
-rohas init my-app --lang python
-```
+> **Note:** Python runtime is stable and production-ready, while TypeScript runtime is currently experimental.
 
 This creates a project structure:
 
@@ -62,45 +64,45 @@ my-app/
 └── config/         # Configuration files
 ```
 
+## Generate Code
+
+After initializing your project, generate type-safe code from the example schemas:
+
+```bash
+cd my-app
+rohas codegen
+```
+
+This generates handler stubs and type definitions in `src/generated/` from the example schemas created by `rohas init`.
+
 ## Define Your First Schema
 
 Create a simple API schema in `schema/api/Health.ro`:
 
 ```rohas
+model HealthResponse {
+  status  String
+  timestamp String
+}
+
 api Health {
-  method = GET
-  path = "/health"
-  
-  response {
-    status: string
-    timestamp: string
-  }
+  method: GET
+  path: "/health"
+  response: HealthResponse
 }
 ```
-
-## Generate Code
-
-Generate type-safe code from your schemas:
-
-```bash
-rohas codegen
-```
-
-This generates handler stubs and type definitions in `src/generated/`.
 
 ## Implement Your Handler
 
-Implement the handler in `src/handlers/api/Health.ts`:
+Implement the handler in `src/handlers/api/health.py`:
 
-```typescript
-import { HealthResponse } from "../generated/api/Health";
+```python
+from generated.api.health import HealthRequest, HealthResponse
+from generated.state import State
+from datetime import datetime
 
-export async function handler(): Promise<HealthResponse> {
-  return {
-    status: "ok",
-    timestamp: new Date().toISOString(),
-  };
-}
+async def handle_health(req: HealthRequest, state: State) -> HealthResponse:
+    return HealthResponse(status="ok", timestamp=datetime.now().isoformat())
 ```
 
 ## Start Development Server

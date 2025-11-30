@@ -55,6 +55,8 @@ rohas init my-app --lang python --example hello-world
 - Handler directories
 - Basic README
 
+**Next step:** After running `rohas init`, you should run `rohas codegen` to generate type-safe code from the example schemas.
+
 ### `rohas codegen`
 
 Generate type-safe code from schema definitions.
