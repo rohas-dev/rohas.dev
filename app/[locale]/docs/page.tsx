@@ -59,7 +59,7 @@ export default async function DocsPage({
           <Link key={index} href={item.href} style={{ textDecoration: 'none' }}>
             <Box
               display="block"
-              p={6}
+              p={{ base: 4, md: 6 }}
               border="1px"
               borderColor="gray.200"
               bg="white"
@@ -74,7 +74,7 @@ export default async function DocsPage({
             >
               <Heading
                 as="h3"
-                fontSize="lg"
+                fontSize={{ base: "md", md: "lg" }}
                 fontWeight="semibold"
                 color="gray.900"
                 _dark={{ color: "gray.50" }}
@@ -88,7 +88,7 @@ export default async function DocsPage({
                 {item.title}
               </Heading>
               <Text
-                fontSize="sm"
+                fontSize={{ base: "xs", md: "sm" }}
                 color="gray.600"
                 _dark={{ color: "gray.400" }}
                 lineHeight="relaxed"

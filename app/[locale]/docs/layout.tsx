@@ -35,9 +35,9 @@ export default async function DocsLayout({
         py={8}
       >
         <Box as="aside" w={{ lg: 64 }} flexShrink={0}>
-          <Box as="nav" position="sticky" top={20}>
+          <Box as="nav" position={{ base: "static", lg: "sticky" }} top={{ lg: 20 }}>
             <DocsNav items={navItems} />
-            <Box mt={4}>
+            <Box mt={4} display={{ base: "none", lg: "block" }}>
               <Alert.Root status="warning" variant="subtle">
                 <Alert.Indicator />
                 <Alert.Content>

@@ -40,8 +40,8 @@ export default function CodePreview() {
         <Flex
           align="center"
           gap={3}
-          px={5}
-          py={4}
+          px={{ base: 3, md: 5 }}
+          py={{ base: 3, md: 4 }}
           bg="gray.900"
           borderBottom="1px"
           borderColor="gray.800"
@@ -49,47 +49,48 @@ export default function CodePreview() {
         >
           <HStack gap={2}>
             <Box
-              w="14px"
-              h="14px"
+              w={{ base: "10px", md: "14px" }}
+              h={{ base: "10px", md: "14px" }}
               borderRadius="full"
               bg="red.500"
               shadow="lg"
             />
             <Box
-              w="14px"
-              h="14px"
+              w={{ base: "10px", md: "14px" }}
+              h={{ base: "10px", md: "14px" }}
               borderRadius="full"
               bg="yellow.500"
               shadow="lg"
             />
             <Box
-              w="14px"
-              h="14px"
+              w={{ base: "10px", md: "14px" }}
+              h={{ base: "10px", md: "14px" }}
               borderRadius="full"
               bg="green.500"
               shadow="lg"
             />
           </HStack>
           <Text
-            fontSize="sm"
+            fontSize={{ base: "xs", md: "sm" }}
             color="gray.400"
             _dark={{ color: "gray.500" }}
-            ml={3}
+            ml={{ base: 2, md: 3 }}
             fontFamily="mono"
+            display={{ base: "none", sm: "block" }}
           >
             schema/api/user.ro
           </Text>
         </Flex>
-        <Box bg="gray.950">
+        <Box bg="gray.950" overflowX="auto">
           <SyntaxHighlighter
             language="javascript"
             style={oneDark as Record<string, React.CSSProperties>}
             customStyle={{
               margin: 0,
-              padding: "1.75rem",
+              padding: "1rem",
               background: "#0a0a0a",
-              fontSize: "0.9375rem",
-              lineHeight: "1.875rem",
+              fontSize: "clamp(0.75rem, 2vw, 0.9375rem)",
+              lineHeight: "1.5rem",
               fontFamily: 'var(--font-mono), "Noto Sans Mono", monospace',
             }}
             PreTag="div"
@@ -98,6 +99,8 @@ export default function CodePreview() {
                 color: "#e4e4e7",
               }
             }}
+            wrapLines
+            wrapLongLines
           >
             {code}
           </SyntaxHighlighter>
