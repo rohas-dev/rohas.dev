@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import DocsNav from "../components/DocsNav";
 import { Box, Flex, Alert, Text } from "@chakra-ui/react";
+import { getRohasVersion } from "../../../lib/version";
 
 export default async function DocsLayout({
   children,
@@ -11,6 +12,7 @@ export default async function DocsLayout({
 }) {
   const { locale } = await params;
   const t = await getTranslations("docs");
+  const version = await getRohasVersion();
   
   const navItems = [
     { href: `/${locale}/docs`, label: t("overview") },
@@ -38,6 +40,23 @@ export default async function DocsLayout({
           <Box as="nav" position={{ base: "static", lg: "sticky" }} top={{ lg: 20 }}>
             <DocsNav items={navItems} />
             <Box mt={4} display={{ base: "none", lg: "block" }}>
+              <Box
+                mb={4}
+                px={3}
+                py={2}
+                borderRadius="md"
+                border="1px"
+                borderColor="gray.200"
+                _dark={{ borderColor: "gray.700", bg: "gray.900"}}
+                bg="gray.50"
+              >
+                <Text fontSize="xs" fontWeight="medium" color="gray.600" _dark={{ color: "gray.400" }}>
+                  Version
+                </Text>
+                <Text fontSize="sm" fontWeight="semibold" color="gray.900" _dark={{ color: "gray.50" }} mt={0.5}>
+                  v{version}
+                </Text>
+              </Box>
               <Alert.Root status="warning" variant="subtle">
                 <Alert.Indicator />
                 <Alert.Content>
