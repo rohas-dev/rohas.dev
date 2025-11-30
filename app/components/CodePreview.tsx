@@ -43,10 +43,9 @@ export default function CodePreview() {
           px={5}
           py={4}
           bg="gray.900"
-          _dark={{ bg: "gray.950" }}
           borderBottom="1px"
           borderColor="gray.800"
-          _dark={{ borderColor: "gray.700" }}
+          _dark={{ bg: "gray.950", borderColor: "gray.700" }}
         >
           <HStack gap={2}>
             <Box

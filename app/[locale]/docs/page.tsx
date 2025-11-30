@@ -62,9 +62,8 @@ export default async function DocsPage({
               p={6}
               border="1px"
               borderColor="gray.200"
-              _dark={{ borderColor: "gray.800" }}
               bg="white"
-              _dark={{ bg: "gray.900" }}
+              _dark={{ borderColor: "gray.800", bg: "gray.900" }}
               borderRadius="lg"
               _hover={{
                 borderColor: "gray.300",

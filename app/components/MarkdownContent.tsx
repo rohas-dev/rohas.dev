@@ -6,6 +6,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useMemo } from "react";
 import { Box } from "@chakra-ui/react";
+import { css } from "@emotion/react";
 
 interface MarkdownContentProps {
   content: string;
@@ -57,112 +58,133 @@ export default function MarkdownContent({
     }
   }, [headings, onHeadingsChange]);
 
+  const markdownStyles = css`
+    & h1 {
+      font-size: 2.25rem;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      color: var(--chakra-colors-gray-900);
+      margin-bottom: 1.5rem;
+      margin-top: 0;
+    }
+    [data-theme="dark"] & h1 {
+      color: var(--chakra-colors-gray-50);
+    }
+    & h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      color: var(--chakra-colors-gray-900);
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--chakra-colors-gray-200);
+      padding-bottom: 0.5rem;
+    }
+    [data-theme="dark"] & h2 {
+      color: var(--chakra-colors-gray-50);
+      border-bottom-color: var(--chakra-colors-gray-800);
+    }
+    & h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      color: var(--chakra-colors-gray-900);
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+    }
+    [data-theme="dark"] & h3 {
+      color: var(--chakra-colors-gray-50);
+    }
+    & h4, & h5, & h6 {
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      color: var(--chakra-colors-gray-900);
+    }
+    [data-theme="dark"] & h4,
+    [data-theme="dark"] & h5,
+    [data-theme="dark"] & h6 {
+      color: var(--chakra-colors-gray-50);
+    }
+    & p {
+      color: var(--chakra-colors-gray-600);
+      line-height: 1.75rem;
+      margin-bottom: 1rem;
+    }
+    [data-theme="dark"] & p {
+      color: var(--chakra-colors-gray-400);
+    }
+    & a {
+      color: var(--chakra-colors-blue-600);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    [data-theme="dark"] & a {
+      color: var(--chakra-colors-blue-500);
+    }
+    & a:hover {
+      text-decoration: underline;
+    }
+    & code {
+      font-size: 0.875rem;
+      font-family: var(--chakra-fonts-mono);
+      background-color: var(--chakra-colors-gray-100);
+      color: var(--chakra-colors-gray-900);
+      padding: 0.125rem 0.375rem;
+      border-radius: 0.375rem;
+    }
+    [data-theme="dark"] & code {
+      background-color: var(--chakra-colors-gray-800);
+      color: var(--chakra-colors-gray-100);
+    }
+    & pre {
+      background-color: var(--chakra-colors-gray-900);
+      border: 1px solid var(--chakra-colors-gray-800);
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      overflow: auto;
+    }
+    [data-theme="dark"] & pre {
+      background-color: var(--chakra-colors-gray-950);
+    }
+    & pre code {
+      background-color: transparent;
+      color: inherit;
+      padding: 0;
+    }
+    & ul, & ol {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+    & li {
+      color: var(--chakra-colors-gray-600);
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    [data-theme="dark"] & li {
+      color: var(--chakra-colors-gray-400);
+    }
+    & blockquote {
+      border-left: 4px solid var(--chakra-colors-gray-300);
+      padding-left: 1rem;
+      font-style: italic;
+      color: var(--chakra-colors-gray-600);
+    }
+    [data-theme="dark"] & blockquote {
+      border-left-color: var(--chakra-colors-gray-700);
+      color: var(--chakra-colors-gray-400);
+    }
+    & strong {
+      color: var(--chakra-colors-gray-900);
+      font-weight: 600;
+    }
+    [data-theme="dark"] & strong {
+      color: var(--chakra-colors-gray-50);
+    }
+  `;
+
   return (
-    <Box
-      sx={{
-        "& h1": {
-          fontSize: "4xl",
-          fontWeight: "semibold",
-          letterSpacing: "tight",
-          color: "gray.900",
-          _dark: { color: "gray.50" },
-          mb: 6,
-          mt: 0,
-        },
-        "& h2": {
-          fontSize: "2xl",
-          fontWeight: "semibold",
-          letterSpacing: "tight",
-          color: "gray.900",
-          _dark: { color: "gray.50" },
-          mt: 12,
-          mb: 4,
-          borderBottom: "1px",
-          borderColor: "gray.200",
-          _dark: { borderColor: "gray.800" },
-          pb: 2,
-        },
-        "& h3": {
-          fontSize: "xl",
-          fontWeight: "semibold",
-          letterSpacing: "tight",
-          color: "gray.900",
-          _dark: { color: "gray.50" },
-          mt: 8,
-          mb: 3,
-        },
-        "& h4, & h5, & h6": {
-          fontWeight: "semibold",
-          letterSpacing: "tight",
-          color: "gray.900",
-          _dark: { color: "gray.50" },
-        },
-        "& p": {
-          color: "gray.600",
-          _dark: { color: "gray.400" },
-          lineHeight: 7,
-          mb: 4,
-        },
-        "& a": {
-          color: "blue.600",
-          _dark: { color: "blue.500" },
-          textDecoration: "none",
-          fontWeight: "medium",
-          _hover: {
-            textDecoration: "underline",
-          },
-        },
-        "& code": {
-          fontSize: "sm",
-          fontFamily: "mono",
-          bg: "gray.100",
-          _dark: { bg: "gray.800" },
-          color: "gray.900",
-          _dark: { color: "gray.100" },
-          px: 1.5,
-          py: 0.5,
-          borderRadius: "md",
-        },
-        "& pre": {
-          bg: "gray.900",
-          _dark: { bg: "gray.950" },
-          border: "1px",
-          borderColor: "gray.800",
-          borderRadius: "lg",
-          shadow: "sm",
-          overflow: "auto",
-          "& code": {
-            bg: "transparent",
-            color: "inherit",
-            px: 0,
-            py: 0,
-          },
-        },
-        "& ul, & ol": {
-          my: 4,
-          pl: 6,
-        },
-        "& li": {
-          color: "gray.600",
-          _dark: { color: "gray.400" },
-          my: 2,
-        },
-        "& blockquote": {
-          borderLeft: "4px",
-          borderColor: "gray.300",
-          _dark: { borderColor: "gray.700" },
-          pl: 4,
-          fontStyle: "italic",
-          color: "gray.600",
-          _dark: { color: "gray.400" },
-        },
-        "& strong": {
-          color: "gray.900",
-          _dark: { color: "gray.50" },
-          fontWeight: "semibold",
-        },
-      }}
-    >
+    <Box css={markdownStyles}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{

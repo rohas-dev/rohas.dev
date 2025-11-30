@@ -31,9 +31,8 @@ export default function ThemeToggle() {
       onClick={() => setTheme(isDark ? "light" : "dark")}
       size="sm"
       bg="gray.100"
-      _dark={{ bg: "gray.800" }}
       color="gray.600"
-      _dark={{ color: "gray.400" }}
+      _dark={{ bg: "gray.800", color: "gray.400" }}
       _hover={{
         bg: "gray.200",
         _dark: { bg: "gray.700" },

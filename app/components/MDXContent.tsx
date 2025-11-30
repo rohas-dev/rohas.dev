@@ -15,10 +15,9 @@ function ErrorComponent({ error }: { error: string }) {
     <Box 
       p={4} 
       bg="red.50" 
-      _dark={{ bg: "red.900" }}
       border="1px" 
       borderColor="red.200" 
-      _dark={{ borderColor: "red.800" }}
+      _dark={{ bg: "red.900", borderColor: "red.800" }}
       borderRadius="lg"
     >
       <Text color="red.800" _dark={{ color: "red.200" }}>Error loading content: {error}</Text>
