@@ -796,7 +796,7 @@ export default async function Home({
       </Container>
 
       {/* Parallax Workbench Showcase */}
-      <ParallaxShowcase />
+      {/* <ParallaxShowcase /> */}
 
       {/* Visual Separator */}
       <Box
