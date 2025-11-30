@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import CodePreview from "../components/CodePreview";
 import ParallaxShowcase from "../components/ParallaxShowcase";
@@ -1846,18 +1847,20 @@ export default async function Home({
           >
             <HStack gap={3}>
               <Box
+                position="relative"
                 w={8}
                 h={8}
                 borderRadius="xl"
-                bgGradient="to-br"
-                gradientFrom="blue.500"
-                gradientTo="purple.600"
-                shadow="lg"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
+                overflow="hidden"
               >
-                <Text color="white" fontWeight="bold" fontSize="sm">R</Text>
+                <Image
+                  src="/dark_logo.png"
+                  alt="Rohas Logo"
+                  fill
+                  style={{
+                    objectFit: "contain",
+                  }}
+                />
               </Box>
               <Text
                 color="gray.600"
