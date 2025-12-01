@@ -6,9 +6,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
     <NextThemeProvider
       attribute="class"
-      defaultTheme="dark"
+      defaultTheme="system"
       enableSystem
       disableTransitionOnChange={false}
+      storageKey="rohas-theme"
     >
       {children}
     </NextThemeProvider>
