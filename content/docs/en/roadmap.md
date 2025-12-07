@@ -8,7 +8,7 @@ Rohas currently provides:
 
 - ✅ Schema-driven development with `.ro` files
 - ✅ Multi-runtime support with **full Python and Rust support**, plus TypeScript
-- ✅ Event adapters (Memory, NATS, Kafka, RabbitMQ, SQS, RocksDB)
+- ✅ Event adapters (Memory, NATS, Kafka, RabbitMQ, SQS)
 - ✅ Code generation for type-safe handlers
 - ✅ HTTP API routing and WebSocket support
 - ✅ Cron job scheduling

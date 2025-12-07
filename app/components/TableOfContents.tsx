@@ -24,34 +24,90 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
   useEffect(() => {
     if (headings.length === 0) return;
 
+    // Use scroll-based detection for more reliable tracking
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 150; // Offset for header/navigation
+      
+      // Find the current section based on scroll position
+      let currentId = "";
+      
+      for (let i = headings.length - 1; i >= 0; i--) {
+        const element = document.getElementById(headings[i].id);
+        if (element) {
+          const elementTop = element.offsetTop;
+          
+          if (elementTop <= scrollPosition) {
+            currentId = headings[i].id;
+            break;
+          }
+        }
+      }
+      
+      // If we're at the top, select the first heading
+      if (scrollPosition < 200 && headings.length > 0) {
+        currentId = headings[0].id;
+      }
+      
+      if (currentId) {
+        setActiveId(currentId);
+      }
+    };
+
+    // Throttle scroll events for performance
+    let ticking = false;
+    const throttledScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    // Also use IntersectionObserver as a backup
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
+        const visibleEntries = entries.filter((entry) => entry.isIntersecting);
+        
+        if (visibleEntries.length > 0) {
+          // Find the entry closest to the top of the viewport
+          visibleEntries.sort((a, b) => {
+            return a.boundingClientRect.top - b.boundingClientRect.top;
+          });
+          
+          const topEntry = visibleEntries[0];
+          if (topEntry.boundingClientRect.top < 200) {
+            setActiveId(topEntry.target.id);
           }
-        });
+        }
       },
       {
-        rootMargin: "-100px 0% -66%",
-        threshold: 0,
+        rootMargin: "-150px 0% -60%",
+        threshold: [0, 0.25, 0.5, 0.75, 1],
       }
     );
 
+    const elements: Element[] = [];
     headings.forEach((heading) => {
       const element = document.getElementById(heading.id);
       if (element) {
         observer.observe(element);
+        elements.push(element);
       }
     });
 
+    window.addEventListener('scroll', throttledScroll, { passive: true });
+    window.addEventListener('resize', throttledScroll, { passive: true });
+    handleScroll(); // Initial check
+
     return () => {
-      headings.forEach((heading) => {
-        const element = document.getElementById(heading.id);
-        if (element) {
-          observer.unobserve(element);
-        }
+      elements.forEach((element) => {
+        observer.unobserve(element);
       });
+      observer.disconnect();
+      window.removeEventListener('scroll', throttledScroll);
+      window.removeEventListener('resize', throttledScroll);
     };
   }, [headings]);
 

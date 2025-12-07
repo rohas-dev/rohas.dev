@@ -16,7 +16,7 @@ port = 3000
 enable_cors = true
 
 [adapter]
-type = "memory"  # memory, nats, kafka, rabbitmq, sqs, rocksdb
+type = "memory"  # memory, nats, kafka, rabbitmq, sqs
 buffer_size = 1000
 
 [telemetry]

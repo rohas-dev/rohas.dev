@@ -104,7 +104,6 @@ Event adapters provide different message broker backends:
 - **RabbitMQ**: AMQP message broker
 - **NATS**: High-performance messaging
 - **SQS**: AWS Simple Queue Service
-- **RocksDB**: Persistent storage adapter
 
 ### 6. CLI (`rohas-cli`)
 

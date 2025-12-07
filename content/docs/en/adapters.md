@@ -164,42 +164,13 @@ fifo = false
 - IAM credentials configured
 - Network access to AWS
 
-### RocksDB Adapter
-
-Persistent event storage using RocksDB. Useful for telemetry, event replay, and local persistence.
-
-**Features:**
-- Embedded database
-- High write performance
-- Compression support
-- Key-value storage
-- Local persistence
-
-**Configuration:**
-```toml
-[adapter]
-type = "rocksdb"
-path = ".rohas/events"
-# Optional: Performance tuning
-write_buffer_size = 67108864  # 64MB
-max_write_buffer_number = 3
-```
-
-**Use cases:**
-- Event replay
-- Telemetry storage
-- Local persistence
-- Development with persistence
-
-**Note:** This adapter is primarily used for telemetry storage, not as the main event bus.
-
 ## Configuration
 
 Configure adapters in `config/rohas.toml`:
 
 ```toml
 [adapter]
-type = "memory"  # or "nats", "kafka", "rabbitmq", "sqs", "rocksdb"
+type = "memory"  # or "nats", "kafka", "rabbitmq", "sqs"
 buffer_size = 1000  # For memory adapter
 ```
 
@@ -246,7 +217,6 @@ queue_prefix = "rohas-"
 
 ### Production - Small Scale
 - **Memory**: Single instance, no persistence needed
-- **RocksDB**: Local persistence required
 
 ### Production - Medium Scale
 - **RabbitMQ**: Reliable, feature-rich
