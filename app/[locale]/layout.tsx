@@ -39,7 +39,7 @@ const notoSansMono = Noto_Sans_Mono({
 
 export const metadata: Metadata = {
   title: "Rohas - Event-Driven Application Framework",
-  description: "Build scalable event-driven applications with schema-driven development. Support for Python and TypeScript runtimes, multiple event adapters, and powerful code generation.",
+  description: "Build scalable event-driven applications with schema-driven development. Support for Python, TypeScript, and Rust runtimes, multiple event adapters, and powerful code generation.",
   keywords: ["event-driven", "orchestration", "schema-driven", "microservices", "rust", "typescript", "python"],
 };
 

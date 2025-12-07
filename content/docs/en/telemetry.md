@@ -172,7 +172,7 @@ Performance metrics provide insights into system behavior.
 Metrics include labels for filtering:
 - `handler_name` - Handler identifier
 - `handler_type` - api, event, cron, websocket
-- `language` - typescript, python
+- `language` - typescript, python, rust
 - `status` - success, error
 
 ## Logs

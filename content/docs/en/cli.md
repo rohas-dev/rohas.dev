@@ -33,7 +33,7 @@ rohas init <name> [--lang <lang>] [--example <name>]
 - `name` (required) - Project name and directory
 
 **Options:**
-- `--lang, -l` - Runtime language: `typescript` or `python` (default: `typescript`)
+- `--lang, -l` - Runtime language: `typescript`, `python`, or `rust` (default: `typescript`)
 - `--example, -e` - Initialize with example code (optional)
 
 **Examples:**
@@ -43,6 +43,9 @@ rohas init my-app --lang typescript
 
 # Create Python project
 rohas init my-app --lang python
+
+# Create Rust project
+rohas init my-app --lang rust
 
 # Create with example
 rohas init my-app --lang python --example hello-world
@@ -69,7 +72,7 @@ rohas codegen [--schema <path>] [--output <path>] [--lang <lang>]
 **Options:**
 - `--schema, -s` - Schema directory path (default: `schema`)
 - `--output, -o` - Output directory for generated code (default: `src`)
-- `--lang, -l` - Target language: `typescript` or `python` (optional, uses config if not specified)
+- `--lang, -l` - Target language: `typescript`, `python`, or `rust` (optional, uses config if not specified)
 
 **Examples:**
 ```bash
@@ -161,7 +164,7 @@ rohas dev --watch false
 **Features:**
 - Hot reload for handlers and schemas
 - Automatic schema re-parsing
-- Handler hot-reloading (TypeScript/Python)
+- Handler hot-reloading (TypeScript/Python/Rust)
 - Development API server
 - WebSocket support
 - Telemetry collection

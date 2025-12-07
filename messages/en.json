@@ -11,7 +11,7 @@
     "subtitle": "",
     "slogan": "",
     "purpose": "Rohas simplifies building event-driven applications by providing a schema-driven development approach that generates type-safe code and handles the complexity of event orchestration.",
-    "description": "Build scalable event-driven applications with schema-driven development. Support for Python and TypeScript runtimes, multiple event adapters, and powerful code generation.",
+    "description": "Build scalable event-driven applications with schema-driven development. Support for Python, TypeScript, and Rust runtimes, multiple event adapters, and powerful code generation.",
     "getStarted": "Get Started",
     "documentation": "Documentation",
     "features": "Powerful Features",
@@ -29,7 +29,7 @@
     },
     "multiRuntime": {
       "title": "Multi-Runtime Support",
-      "description": "Write handlers in Python or TypeScript/Node.js. Choose the language that fits your team."
+      "description": "Write handlers in Python, TypeScript/Node.js, or Rust. Choose the language that fits your team."
     },
     "adapters": {
       "title": "Event Adapters",

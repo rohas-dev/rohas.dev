@@ -47,7 +47,7 @@ export default async function DocsLayout({
                 borderRadius="md"
                 border="1px"
                 borderColor="gray.200"
-                _dark={{ borderColor: "gray.700", bg: "gray.900"}}
+                _dark={{ borderColor: "gray.700", bg: "gray.900" }}
                 bg="gray.50"
               >
                 <Text fontSize="xs" fontWeight="medium" color="gray.600" _dark={{ color: "gray.400" }}>
@@ -71,6 +71,10 @@ export default async function DocsLayout({
                       runtime is still experimental. We strongly recommend using{" "}
                       <Text as="span" fontWeight="bold" color="blue.600" _dark={{ color: "blue.400" }}>
                         Python
+                      </Text>{" "}
+                      or{" "}
+                      <Text as="span" fontWeight="bold" color="blue.600" _dark={{ color: "blue.400" }}>
+                        Rust
                       </Text>{" "}
                       for production applications.
                     </Text>

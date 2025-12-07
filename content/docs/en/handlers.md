@@ -6,9 +6,9 @@ Handlers are where you implement the business logic for your APIs, events, and c
 
 Handler files must be named exactly as the API/Event/Cron name in the schema:
 
-- API `Health` → `src/handlers/api/Health.ts` or `Health.py`
+- API `Health` → `src/handlers/api/Health.ts`, `Health.py`, or `health.rs`
 - Event `UserCreated` → Handler defined in event schema
-- Cron `DailyCleanup` → `src/handlers/cron/DailyCleanup.ts` or `DailyCleanup.py`
+- Cron `DailyCleanup` → `src/handlers/cron/DailyCleanup.ts`, `DailyCleanup.py`, or `daily_cleanup.rs`
 
 ## Handler Signatures
 
@@ -61,6 +61,34 @@ export async function handler(
 }
 ```
 
+```rust
+use crate::generated::api::GetUser::{GetUserRequest, GetUserResponse};
+use crate::generated::state::State;
+use rohas_runtime::Result;
+
+pub async fn handle_get_user(
+    req: GetUserRequest,
+    state: &mut State,
+) -> Result<GetUserResponse> {
+    // Access path parameters
+    let user_id = req.id.clone(); // From path: /users/:id
+    
+    // Access query parameters
+    let include_posts = req.query_params
+        .get("include_posts")
+        .map(|s| s.as_str())
+        .unwrap_or("false");
+    
+    // Access request body (if present)
+    let body_data = req.body.clone();
+    
+    // Use state for logging and events
+    state.logger().info(&format!("Fetching user {}", user_id));
+    
+    Ok(GetUserResponse { data: user })
+}
+```
+
 ### Event Handlers
 
 Event handlers receive an event object and optionally a `State` object:
@@ -97,6 +125,29 @@ export async function handler(
 }
 ```
 
+```rust
+use crate::generated::events::UserCreated::UserCreated;
+use crate::generated::state::State;
+use rohas_runtime::Result;
+
+pub async fn handle_user_created(
+    event: UserCreated,
+    state: &mut State,
+) -> Result<()> {
+    // Access event payload
+    let user_id = event.payload.id;
+    let email = event.payload.email.clone();
+    
+    // Log and trigger additional events
+    state.logger().info(&format!("Processing user created: {}", user_id));
+    state.trigger_event("WelcomeEmailSent", serde_json::json!({
+        "email": email
+    }))?;
+    
+    Ok(())
+}
+```
+
 ### Cron Handlers
 
 Cron handlers receive a request object (usually empty) and optionally a `State` object:
@@ -120,6 +171,23 @@ export async function handler(req: any, state: State): Promise<void> {
 }
 ```
 
+```rust
+use crate::generated::state::State;
+use rohas_runtime::Result;
+
+pub async fn handle_daily_cleanup(
+    _req: (),
+    state: &mut State,
+) -> Result<()> {
+    state.logger().info("Starting daily cleanup");
+    // Cleanup logic
+    state.trigger_event("CleanupCompleted", serde_json::json!({
+        "timestamp": chrono::Utc::now().to_rfc3339()
+    }))?;
+    Ok(())
+}
+```
+
 ## Request Object Structure
 
 ### API Request Properties
@@ -132,10 +200,12 @@ The request object (`*Request`) contains:
 - **Query Parameters**: URL query string parameters
   - Python: `req.query_params` (Dict[str, str])
   - TypeScript: `req.queryParams` (Record of string to string)
+  - Rust: `req.query_params` (HashMap&lt;String, String&gt;)
   
 - **Body**: Request body (if specified in schema)
   - Python: `req.body` (typed object)
   - TypeScript: `req.body` (typed object)
+  - Rust: `req.body` (typed struct)
 
 **Example with path and query parameters:**
 
@@ -183,6 +253,34 @@ export async function handler(
 }
 ```
 
+```rust
+use crate::generated::api::GetUser::{GetUserRequest, GetUserResponse};
+use crate::generated::state::State;
+use rohas_runtime::Result;
+
+pub async fn handle_get_user(
+    req: GetUserRequest,
+    state: &mut State,
+) -> Result<GetUserResponse> {
+    // Path parameter from /users/:id
+    let user_id = req.id.clone(); // e.g., "123" from /users/123
+    
+    // Query parameters from ?include_posts=true&format=json
+    let include_posts = req.query_params
+        .get("include_posts")
+        .map(|s| s.as_str())
+        .unwrap_or("false");
+    let format_type = req.query_params
+        .get("format")
+        .map(|s| s.as_str())
+        .unwrap_or("json");
+    
+    // Use parameters
+    let user = fetch_user(&user_id, include_posts == "true")?;
+    Ok(GetUserResponse { data: user })
+}
+```
+
 ## State Object
 
 The `State` object provides access to runtime features:
@@ -224,6 +322,24 @@ export async function handler(req: any, state: State) {
 }
 ```
 
+```rust
+use crate::generated::state::State;
+
+pub async fn handler(_req: (), state: &mut State) -> Result<()> {
+    // Log levels
+    state.logger().info("Information message");
+    state.logger().error("Error message");
+    state.logger().warning("Warning message");
+    state.logger().warn("Warning message (alias)");
+    state.logger().debug("Debug message");
+    state.logger().trace("Trace message");
+    
+    // With additional fields
+    state.logger().info(&format!("User action: userId={}, action={}", 123, "login"));
+    Ok(())
+}
+```
+
 ### Event Triggering
 
 #### Manual Event Triggering
@@ -250,6 +366,20 @@ export async function handler(req: any, state: State) {
     data: "value",
     timestamp: new Date().toISOString()
   });
+}
+```
+
+```rust
+use crate::generated::state::State;
+use rohas_runtime::Result;
+
+pub async fn handler(_req: (), state: &mut State) -> Result<()> {
+    // Trigger an event manually
+    state.trigger_event("CustomEvent", serde_json::json!({
+        "data": "value",
+        "timestamp": chrono::Utc::now().to_rfc3339()
+    }))?;
+    Ok(())
 }
 ```
 
@@ -308,6 +438,33 @@ export async function handler(
   state.triggerEvent("AnalyticsEvent", { action: "user_created" });
   
   return { data: user };
+}
+```
+
+```rust
+use crate::generated::api::CreateUser::{CreateUserRequest, CreateUserResponse};
+use crate::generated::state::State;
+use rohas_runtime::Result;
+
+pub async fn handler(
+    req: CreateUserRequest,
+    state: &mut State,
+) -> Result<CreateUserResponse> {
+    let user = create_user(req.body.clone())?;
+    
+    // Set payload for auto-triggered events (defined in schema)
+    state.set_payload("UserCreated", serde_json::json!({
+        "id": user.id,
+        "name": user.name,
+        "email": user.email
+    }))?;
+    
+    // Can also manually trigger other events
+    state.trigger_event("AnalyticsEvent", serde_json::json!({
+        "action": "user_created"
+    }))?;
+    
+    Ok(CreateUserResponse { data: user })
 }
 ```
 
@@ -381,6 +538,51 @@ export async function handler(
   });
   
   return { data: posts };
+}
+```
+
+```rust
+use crate::generated::api::GetUserPosts::{GetUserPostsRequest, GetUserPostsResponse};
+use crate::generated::state::State;
+use rohas_runtime::Result;
+
+pub async fn handle_get_user_posts(
+    req: GetUserPostsRequest,
+    state: &mut State,
+) -> Result<GetUserPostsResponse> {
+    // Path parameter: /users/:userId/posts
+    let user_id = req.user_id.clone();
+    
+    // Query parameters: ?limit=10&offset=0&sort=created_at
+    let limit = req.query_params
+        .get("limit")
+        .and_then(|s| s.parse::<i32>().ok())
+        .unwrap_or(10);
+    let offset = req.query_params
+        .get("offset")
+        .and_then(|s| s.parse::<i32>().ok())
+        .unwrap_or(0);
+    let sort_by = req.query_params
+        .get("sort")
+        .map(|s| s.as_str())
+        .unwrap_or("created_at");
+    
+    // Logging
+    state.logger().info(&format!(
+        "Fetching posts for user {}: limit={}, offset={}",
+        user_id, limit, offset
+    ));
+    
+    // Business logic
+    let posts = fetch_user_posts(&user_id, limit, offset, sort_by)?;
+    
+    // Trigger analytics event
+    state.trigger_event("PostsViewed", serde_json::json!({
+        "user_id": user_id,
+        "count": posts.len()
+    }))?;
+    
+    Ok(GetUserPostsResponse { data: posts })
 }
 ```
 

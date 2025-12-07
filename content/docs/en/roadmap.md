@@ -7,7 +7,7 @@ This roadmap outlines the planned features and improvements for Rohas. We're com
 Rohas currently provides:
 
 - ✅ Schema-driven development with `.ro` files
-- ✅ Multi-runtime support (Python, TypeScript)
+- ✅ Multi-runtime support with **full Python and Rust support**, plus TypeScript
 - ✅ Event adapters (Memory, NATS, Kafka, RabbitMQ, SQS, RocksDB)
 - ✅ Code generation for type-safe handlers
 - ✅ HTTP API routing and WebSocket support
@@ -29,10 +29,17 @@ Rohas currently provides:
 - [ ] Performance optimizations
 
 **Python Runtime**
+- ✅ **Fully supported** - Production ready
 - [ ] Async handler improvements
 - [ ] Better error messages and stack traces
 - [ ] Module caching optimizations
 - [ ] Support for Python 3.12+ features
+
+**Rust Runtime**
+- ✅ **Fully supported** - Production ready
+- [ ] Performance optimizations
+- [ ] Enhanced error handling
+- [ ] Better documentation and examples
 
 ### Schema Enhancements
 
@@ -47,8 +54,24 @@ Rohas currently provides:
 - [ ] Improved code generation templates
 - [ ] Better TypeScript type definitions
 - [ ] Python type hints improvements
-- [ ] Support for additional languages (Go, Rust)
+- [ ] Support for additional languages (Go)
 - [ ] Custom code generation templates
+
+### Database & ORM
+
+- [ ] ORM integration for database operations
+- [ ] Database migration tools
+- [ ] Query builder support
+- [ ] Connection pooling and management
+- [ ] Support for multiple database backends (PostgreSQL, MySQL, SQLite)
+
+### WebSocket Enhancements
+
+- [ ] Data encryption for WebSocket connections
+- [ ] WebSocket authentication and authorization
+- [ ] Message compression
+- [ ] Connection management improvements
+- [ ] Real-time metrics for WebSocket connections
 
 ## Q2 2025 - Production Features
 
@@ -166,7 +189,7 @@ Rohas currently provides:
 
 **Multi-language Support**
 - [ ] Go runtime
-- [ ] Rust runtime
+- ✅ Rust runtime (fully supported)
 - [ ] Java runtime
 - [ ] Ruby runtime
 

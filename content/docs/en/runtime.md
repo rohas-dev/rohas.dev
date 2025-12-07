@@ -1,6 +1,6 @@
 # Runtime
 
-Rohas supports multiple runtime environments for executing handlers. Currently, TypeScript and Python are supported, with each runtime providing full access to the language's ecosystem.
+Rohas supports multiple runtime environments for executing handlers. Currently, TypeScript, Python, and Rust are supported, with each runtime providing full access to the language's ecosystem.
 
 ## Supported Runtimes
 
@@ -62,6 +62,42 @@ The Python runtime uses PyO3 for seamless Python integration.
 - Automatic sys.path configuration
 - Type hints via generated types
 
+### Rust Runtime
+
+The Rust runtime provides native performance and zero-cost abstractions for handler execution.
+
+**Features:**
+- Native Rust performance
+- Full async/await support with Tokio
+- Type-safe handler execution
+- Direct access to Rust ecosystem
+- Hot-reload in development mode via dynamic libraries
+
+**Handler Execution:**
+- Handlers are compiled as dynamic libraries
+- Automatic handler registration at runtime
+- Zero-copy data handling
+- Full access to Rust standard library and crates
+
+**Example Handler:**
+
+```rust
+use crate::generated::api::Health::{HealthRequest, HealthResponse};
+use crate::generated::state::State;
+use rohas_runtime::Result;
+
+pub async fn handle_health(
+    req: HealthRequest,
+    state: &mut State,
+) -> Result<HealthResponse> {
+    state.logger().info("Health check requested");
+    Ok(HealthResponse {
+        status: "ok".to_string(),
+        timestamp: chrono::Utc::now().to_rfc3339(),
+    })
+}
+```
+
 ## Handler Context
 
 All handlers receive a `HandlerContext` object containing:
@@ -88,6 +124,18 @@ import { HandlerContext } from "../generated/runtime";
 export async function handler(context: HandlerContext): Promise<Response> {
   const { payload, query_params } = context;
   // Use context data
+}
+```
+
+```rust
+use crate::generated::runtime::HandlerContext;
+use rohas_runtime::Result;
+
+pub async fn handler(context: HandlerContext) -> Result<Response> {
+    let payload = context.payload;
+    let query_params = context.query_params;
+    // Use context data
+    Ok(Response::default())
 }
 ```
 
@@ -127,6 +175,26 @@ async def handler(input: CreateUserInput) -> User:
     )
 ```
 
+**Rust:**
+```rust
+use crate::generated::api::CreateUser::{CreateUserInput, User};
+use crate::generated::state::State;
+use rohas_runtime::Result;
+
+pub async fn handler(
+    input: CreateUserInput,
+    state: &mut State,
+) -> Result<User> {
+    // Process input
+    Ok(User {
+        id: 1,
+        name: input.name.clone(),
+        email: input.email.clone(),
+        created_at: chrono::Utc::now(),
+    })
+}
+```
+
 ### Event Handlers
 
 Event handlers process events asynchronously.
@@ -150,6 +218,22 @@ async def handler(event: UserCreated) -> None:
     # Process event
 ```
 
+**Rust:**
+```rust
+use crate::generated::events::UserCreated::UserCreated;
+use crate::generated::state::State;
+use rohas_runtime::Result;
+
+pub async fn handler(
+    event: UserCreated,
+    state: &mut State,
+) -> Result<()> {
+    state.logger().info(&format!("User created: {}", event.user_id));
+    // Process event
+    Ok(())
+}
+```
+
 ### Cron Handlers
 
 Cron handlers execute on a schedule.
@@ -167,6 +251,18 @@ export async function handler(): Promise<void> {
 async def handler() -> None:
     # Scheduled task logic
     print("Running scheduled cleanup")
+```
+
+**Rust:**
+```rust
+use crate::generated::state::State;
+use rohas_runtime::Result;
+
+pub async fn handler(state: &mut State) -> Result<()> {
+    // Scheduled task logic
+    state.logger().info("Running scheduled cleanup");
+    Ok(())
+}
 ```
 
 ### WebSocket Handlers
@@ -208,6 +304,31 @@ async def on_disconnect(context: HandlerContext) -> None:
     print("Client disconnected")
 ```
 
+**Rust:**
+```rust
+use crate::generated::websockets::Chat::WebSocketMessage;
+use crate::generated::runtime::HandlerContext;
+use rohas_runtime::Result;
+
+pub async fn on_connect(context: HandlerContext) -> Result<()> {
+    println!("Client connected");
+    Ok(())
+}
+
+pub async fn on_message(
+    message: WebSocketMessage,
+    context: HandlerContext,
+) -> Result<()> {
+    // Handle message
+    Ok(())
+}
+
+pub async fn on_disconnect(context: HandlerContext) -> Result<()> {
+    println!("Client disconnected");
+    Ok(())
+}
+```
+
 ## Error Handling
 
 Handlers can return errors that are automatically handled by the runtime.
@@ -236,6 +357,21 @@ async def handler() -> Response:
         raise Exception(f"Handler failed: {str(e)}")
 ```
 
+### Rust
+
+```rust
+use rohas_runtime::Result;
+
+pub async fn handler() -> Result<Response> {
+    match some_operation() {
+        Ok(data) => Ok(Response { success: true }),
+        Err(e) => Err(rohas_runtime::RuntimeError::ExecutionFailed(
+            format!("Handler failed: {}", e)
+        )),
+    }
+}
+```
+
 ## Execution Timeout
 
 Handlers have a default timeout of 30 seconds. Timeouts are configurable per handler type.
@@ -246,6 +382,7 @@ In development mode (`rohas dev` or `rohas dev --workbench`), handlers are autom
 
 - **TypeScript**: Module cache invalidation
 - **Python**: Import cache clearing and module reloading
+- **Rust**: Dynamic library reloading
 
 ## Dependencies
 
@@ -292,6 +429,30 @@ async def handler():
     return response.json()
 ```
 
+### Rust
+
+Add dependencies to `Cargo.toml`:
+
+```toml
+[dependencies]
+reqwest = { version = "0.11", features = ["json"] }
+tokio = { version = "1", features = ["full"] }
+```
+
+Import in handlers:
+
+```rust
+use reqwest;
+
+pub async fn handler() -> Result<Response> {
+    let response = reqwest::get("https://api.example.com")
+        .await?
+        .json::<serde_json::Value>()
+        .await?;
+    Ok(response)
+}
+```
+
 ## Performance Considerations
 
 ### TypeScript
@@ -305,6 +466,13 @@ async def handler():
 - Async handlers are more efficient
 - Avoid blocking operations
 - Use async libraries (aiohttp, asyncpg, etc.)
+
+### Rust
+
+- Native performance with zero-cost abstractions
+- Excellent async performance with Tokio
+- Use async libraries (reqwest, tokio-postgres, etc.)
+- Leverage Rust's type system for safety
 
 ## Debugging
 
@@ -333,13 +501,29 @@ async def handler():
     # Handler logic
 ```
 
+### Rust
+
+Use the state logger or `println!`:
+
+```rust
+use crate::generated::state::State;
+
+pub async fn handler(state: &mut State) -> Result<()> {
+    state.logger().info("Debug info");
+    // Or use println! for quick debugging
+    println!("Debug info: {:?}", data);
+    // Handler logic
+    Ok(())
+}
+```
+
 ## Best Practices
 
 1. **Keep handlers focused**: One handler, one responsibility
 2. **Use generated types**: Always import from `generated/`
 3. **Handle errors gracefully**: Use try/catch blocks
 4. **Use async/await**: For all I/O operations
-5. **Avoid blocking operations**: Especially in Python
+5. **Avoid blocking operations**: Especially in Python and TypeScript
 6. **Test handlers independently**: Unit test your logic
 7. **Use type hints**: For better IDE support
 

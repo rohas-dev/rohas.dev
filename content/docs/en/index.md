@@ -11,8 +11,8 @@ Learn how to build event-driven applications with Rohas.
 
 - [Architecture](/docs/architecture) - Understand Rohas architecture and components
 - [Schemas](/docs/schemas) - Learn how to define APIs, events, models, and cron jobs
-- [Handlers](/docs/handlers) - Implement handlers in Python or TypeScript
-- [Runtime](/docs/runtime) - TypeScript and Python runtime details
+- [Handlers](/docs/handlers) - Implement handlers in Python, TypeScript, or Rust
+- [Runtime](/docs/runtime) - TypeScript, Python, and Rust runtime details
 - [Event Adapters](/docs/adapters) - Connect to various message brokers
 - [Telemetry](/docs/telemetry) - Observability, tracing, and monitoring
 

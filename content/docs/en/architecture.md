@@ -63,6 +63,12 @@ The runtime executes handlers in different programming languages:
 - Module hot-reloading
 - Full Python standard library access
 
+**Rust Runtime:**
+- Native Rust performance
+- Dynamic library loading for handlers
+- Full async/await support with Tokio
+- Zero-cost abstractions
+
 **Features:**
 - Automatic handler discovery
 - Context passing (payload, query params, etc.)
@@ -81,6 +87,7 @@ Generates type-safe code from schemas:
 **Supported Languages:**
 - TypeScript/JavaScript
 - Python
+- Rust
 
 ### 5. Adapters (`rohas-adapters`)
 
@@ -135,7 +142,7 @@ Observability and monitoring:
 ```
 1. HTTP Request → Engine Router
 2. Router → Executor
-3. Executor → Runtime (TypeScript/Python)
+3. Executor → Runtime (TypeScript/Python/Rust)
 4. Runtime → Handler Execution
 5. Handler → Response
 6. Response → HTTP Response

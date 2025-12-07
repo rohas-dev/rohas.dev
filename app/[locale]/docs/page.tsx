@@ -43,7 +43,7 @@ export default async function DocsPage({
           {
             href: `/${locale}/docs/handlers`,
             title: t("handlers"),
-            description: "Implement handlers in Python or TypeScript to process events and API requests.",
+            description: "Implement handlers in Python, TypeScript, or Rust to process events and API requests.",
           },
           {
             href: `/${locale}/docs/adapters`,

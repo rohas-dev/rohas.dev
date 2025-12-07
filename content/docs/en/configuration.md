@@ -8,7 +8,7 @@ Configure your Rohas project using `config/rohas.toml`.
 [project]
 name = "my-app"
 version = "0.1.0"
-language = "typescript"  # or "python"
+language = "typescript"  # or "python" or "rust"
 
 [server]
 host = "127.0.0.1"
@@ -45,7 +45,7 @@ Project version (semver format).
 
 ### `language`
 
-Runtime language: `typescript` or `python`.
+Runtime language: `typescript`, `python`, or `rust`.
 
 ## Server Settings
 

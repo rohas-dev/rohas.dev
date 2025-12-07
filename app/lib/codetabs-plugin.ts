@@ -19,78 +19,234 @@ export function remarkCodeTabs() {
         const codeNode = node as Code;
         const lang = (codeNode.lang || '').toLowerCase();
         
-        // Look ahead for another code block (up to 3 nodes ahead to allow for text labels)
+        if (!lang) {
+          // No language specified, keep as is
+          nodes.push(node);
+          i++;
+          continue;
+        }
+        
+        // Look ahead for other code blocks (skip paragraphs and other non-code nodes)
+        let foundTrio = false;
         let foundPair = false;
         let skipCount = 1;
         
-        for (let j = i + 1; j < Math.min(i + 4, tree.children.length); j++) {
+        // First, try to find three consecutive code blocks with different languages
+        let secondCodeNode: Code | null = null;
+        let secondLang: string | null = null;
+        let secondIndex = -1;
+        let thirdCodeNode: Code | null = null;
+        let thirdLang: string | null = null;
+        let thirdIndex = -1;
+        
+        // Find second code block - look up to 10 nodes ahead, skipping non-code nodes
+        for (let j = i + 1; j < Math.min(i + 15, tree.children.length); j++) {
           const nextNode = tree.children[j];
-          
           if (nextNode.type === 'code') {
-            const nextCodeNode = nextNode as Code;
-            const nextLang = (nextCodeNode.lang || '').toLowerCase();
-            
-            // If languages are different and both are valid programming languages, create tabs
-            if (lang && nextLang && lang !== nextLang) {
-              // Normalize language names (e.g., 'ts' -> 'typescript')
-              const normalizedLang1 = normalizeLanguage(lang);
-              const normalizedLang2 = normalizeLanguage(nextLang);
-              
-              // Determine order: if first is typescript and second is python, keep order
-              // Otherwise, check if we should swap based on common patterns
-              let finalLang1 = normalizedLang1;
-              let finalCode1 = codeNode.value;
-              let finalLang2 = normalizedLang2;
-              let finalCode2 = nextCodeNode.value;
-              
-              // Prefer Python first, then TypeScript (common pattern)
-              if (normalizedLang1 === 'typescript' && normalizedLang2 === 'python') {
-                finalLang1 = normalizedLang2;
-                finalCode1 = nextCodeNode.value;
-                finalLang2 = normalizedLang1;
-                finalCode2 = codeNode.value;
-              }
-              
-              // Create a CodeTabs node with generic props
-              nodes.push({
-                type: 'mdxJsxFlowElement',
-                name: 'CodeTabs',
-                attributes: [
-                  {
-                    type: 'mdxJsxAttribute',
-                    name: 'lang1',
-                    value: finalLang1,
-                  },
-                  {
-                    type: 'mdxJsxAttribute',
-                    name: 'code1',
-                    value: finalCode1,
-                  },
-                  {
-                    type: 'mdxJsxAttribute',
-                    name: 'lang2',
-                    value: finalLang2,
-                  },
-                  {
-                    type: 'mdxJsxAttribute',
-                    name: 'code2',
-                    value: finalCode2,
-                  },
-                ],
-                children: [],
-              });
-              
-              // Skip both code blocks and any text nodes in between
-              skipCount = j - i + 1;
-              foundPair = true;
+            const nextCode = nextNode as Code;
+            const nextLang = (nextCode.lang || '').toLowerCase();
+            // Only consider if it has a language and is different from first
+            if (nextLang && nextLang !== lang) {
+              secondCodeNode = nextCode;
+              secondLang = nextLang;
+              secondIndex = j;
               break;
             }
           }
         }
         
-        if (foundPair) {
+        // If second code block found, look for third
+        if (secondCodeNode && secondLang) {
+          for (let j = secondIndex + 1; j < Math.min(secondIndex + 15, tree.children.length); j++) {
+            const nextNode = tree.children[j];
+            if (nextNode.type === 'code') {
+              const nextCode = nextNode as Code;
+              const nextLang = (nextCode.lang || '').toLowerCase();
+              // Only consider if it has a language and is different from both first and second
+              if (nextLang && nextLang !== lang && nextLang !== secondLang) {
+                thirdCodeNode = nextCode;
+                thirdLang = nextLang;
+                thirdIndex = j;
+                break;
+              }
+            }
+          }
+        }
+        
+        // If we have three different languages, create three tabs
+        if (secondCodeNode && thirdCodeNode && lang && secondLang && thirdLang &&
+            lang !== secondLang && lang !== thirdLang && secondLang !== thirdLang &&
+            codeNode.value.trim() && secondCodeNode.value.trim() && thirdCodeNode.value.trim()) {
+          // Normalize language names
+          const normalizedLang1 = normalizeLanguage(lang);
+          const normalizedLang2 = normalizeLanguage(secondLang);
+          const normalizedLang3 = normalizeLanguage(thirdLang);
+          
+          // Language priority: python (1) > rust (2) > typescript (3)
+          const langPriority: Record<string, number> = {
+            'python': 1,
+            'rust': 2,
+            'typescript': 3,
+            'ts': 3, // Also handle 'ts' as typescript
+          };
+          
+          // Create array with original code and normalized language, then sort by priority
+          const langs = [
+            { lang: normalizedLang1, code: codeNode.value, priority: langPriority[normalizedLang1] || 99 },
+            { lang: normalizedLang2, code: secondCodeNode.value, priority: langPriority[normalizedLang2] || 99 },
+            { lang: normalizedLang3, code: thirdCodeNode.value, priority: langPriority[normalizedLang3] || 99 },
+          ];
+          
+          // Sort by priority to get: Python (1), Rust (2), TypeScript (3)
+          langs.sort((a, b) => a.priority - b.priority);
+          
+          const encodeCode = (str: string): string => {
+            const jsonStr = JSON.stringify(str);
+            return Buffer.from(jsonStr, 'utf8')
+              .toString('base64')
+              .replace(/\+/g, '-')
+              .replace(/\//g, '_')
+              .replace(/=/g, '');
+          };
+          
+          nodes.push({
+            type: 'mdxJsxFlowElement',
+            name: 'CodeTabs',
+            attributes: [
+              {
+                type: 'mdxJsxAttribute',
+                name: 'lang1',
+                value: langs[0].lang,
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'code1',
+                value: encodeCode(langs[0].code),
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'encoded1',
+                value: 'true',
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'lang2',
+                value: langs[1].lang,
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'code2',
+                value: encodeCode(langs[1].code),
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'encoded2',
+                value: 'true',
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'lang3',
+                value: langs[2].lang,
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'code3',
+                value: encodeCode(langs[2].code),
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'encoded3',
+                value: 'true',
+              },
+            ],
+            children: [],
+          });
+          
+          skipCount = thirdIndex - i + 1;
+          foundTrio = true;
+        }
+        // Otherwise, try to find a pair (two code blocks)
+        else if (secondCodeNode && secondLang && lang && lang !== secondLang) {
+          const normalizedLang1 = normalizeLanguage(lang);
+          const normalizedLang2 = normalizeLanguage(secondLang);
+          
+          // Language priority: python > rust > typescript
+          const langPriority: Record<string, number> = {
+            'python': 1,
+            'rust': 2,
+            'typescript': 3,
+          };
+          
+          const priority1 = langPriority[normalizedLang1] || 99;
+          const priority2 = langPriority[normalizedLang2] || 99;
+          
+          let finalLang1 = normalizedLang1;
+          let finalCode1 = codeNode.value;
+          let finalLang2 = normalizedLang2;
+          let finalCode2 = secondCodeNode.value;
+          
+          // Swap if second language has higher priority (lower number)
+          if (priority2 < priority1) {
+            finalLang1 = normalizedLang2;
+            finalCode1 = secondCodeNode.value;
+            finalLang2 = normalizedLang1;
+            finalCode2 = codeNode.value;
+          }
+          
+          const encodeCode = (str: string): string => {
+            const jsonStr = JSON.stringify(str);
+            return Buffer.from(jsonStr, 'utf8')
+              .toString('base64')
+              .replace(/\+/g, '-')
+              .replace(/\//g, '_')
+              .replace(/=/g, '');
+          };
+          
+          nodes.push({
+            type: 'mdxJsxFlowElement',
+            name: 'CodeTabs',
+            attributes: [
+              {
+                type: 'mdxJsxAttribute',
+                name: 'lang1',
+                value: finalLang1,
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'code1',
+                value: encodeCode(finalCode1),
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'encoded1',
+                value: 'true',
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'lang2',
+                value: finalLang2,
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'code2',
+                value: encodeCode(finalCode2),
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'encoded2',
+                value: 'true',
+              },
+            ],
+            children: [],
+          });
+          
+          skipCount = secondIndex - i + 1;
+          foundPair = true;
+        }
+        
+        if (foundTrio || foundPair) {
           i += skipCount;
-              continue;
+          continue;
         }
       }
       

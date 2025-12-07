@@ -4,7 +4,7 @@ Install Rohas CLI and set up your development environment.
 
 ## Prerequisites
 
-- **Rust 1.70+** - Install from [rustup.rs](https://rustup.rs)
+- **Rust 1.70+** - Install from [rustup.rs](https://rustup.rs) (required for CLI and Rust runtime)
 - **Cargo** - Comes with Rust installation
 - **Node.js 18+** (for TypeScript runtime) - Install from [nodejs.org](https://nodejs.org)
 - **Python 3.9+** (for Python runtime) - Install from [python.org](https://python.org)
@@ -74,6 +74,15 @@ For Python projects, ensure Python 3.9+ is installed:
 ```bash
 python --version  # Should be 3.9.0 or higher
 pip install -r requirements.txt  # Install project dependencies
+```
+
+### Rust
+
+For Rust projects, ensure Rust 1.70+ is installed (comes with the CLI installation):
+
+```bash
+rustc --version  # Should be 1.70.0 or higher
+cargo build  # Build project dependencies
 ```
 
 ## Verify Installation

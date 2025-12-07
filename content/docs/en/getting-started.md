@@ -4,7 +4,7 @@ Get up and running with Rohas in minutes. This guide will walk you through creat
 
 ## Prerequisites
 
-- Rust 1.70 or higher (for installing Rohas CLI)
+- Rust 1.70 or higher (for installing Rohas CLI and Rust runtime)
 - Node.js 18+ (for TypeScript runtime) or Python 3.9+ (for Python runtime)
 - Cargo (Rust package manager)
 
@@ -44,7 +44,13 @@ Or for TypeScript (experimental):
 rohas init my-app --lang typescript
 ```
 
-> **Note:** Python runtime is stable and production-ready, while TypeScript runtime is currently experimental.
+Or for Rust:
+
+```bash
+rohas init my-app --lang rust
+```
+
+> **Note:** Python and Rust runtimes are stable and production-ready, while TypeScript runtime is currently experimental.
 
 This creates a project structure:
 
@@ -94,8 +100,9 @@ api Health {
 
 ## Implement Your Handler
 
-Implement the handler in `src/handlers/api/health.py`:
+Implement the handler in `src/handlers/api/health.py` (Python), `src/handlers/api/health.ts` (TypeScript), or `src/handlers/api/health.rs` (Rust):
 
+**Python:**
 ```python
 from generated.api.health import HealthRequest, HealthResponse
 from generated.state import State
@@ -103,6 +110,23 @@ from datetime import datetime
 
 async def handle_health(req: HealthRequest, state: State) -> HealthResponse:
     return HealthResponse(status="ok", timestamp=datetime.now().isoformat())
+```
+
+**Rust:**
+```rust
+use crate::generated::api::health::{HealthRequest, HealthResponse};
+use crate::generated::state::State;
+use rohas_runtime::Result;
+
+pub async fn handle_health(
+    req: HealthRequest,
+    state: &mut State,
+) -> Result<HealthResponse> {
+    Ok(HealthResponse {
+        status: "ok".to_string(),
+        timestamp: chrono::Utc::now().to_rfc3339(),
+    })
+}
 ```
 
 ## Start Development Server
