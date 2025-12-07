@@ -27,7 +27,7 @@ cargo install rohas-cli
 Verify the installation:
 
 ```bash
-rohas --version
+rohas version
 ```
 
 ## Create Your First Project

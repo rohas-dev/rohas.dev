@@ -27,7 +27,7 @@ This script will:
 Verify the installation:
 
 ```bash
-rohas --version
+rohas version
 ```
 
 ## Install via Cargo
@@ -41,7 +41,7 @@ cargo install rohas-cli
 Verify the installation:
 
 ```bash
-rohas --version
+rohas version
 ```
 
 ## Build from Source
